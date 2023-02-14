@@ -1,46 +1,112 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 import React from "react";
 import Pokemon from "./Pokemon";
+import { requestGet } from './utils/reqApi';
+import {Button} from "./Button";
+import Loading from './Loading';
 
+ const PokedexApi = require('pokedex')
 class Pokedex extends React.Component {
   constructor(props) {
     super(props);
-    const {pokemons} = this.props
     this.state = {
+      loading: true,
       indexPokemon: 0,
       typePokemon: 'All',
-      allPokemons: pokemons
+      allPokemons: [],
+      arrayTypes: [
+"electric",
+"bug" ,
+"dark",
+"dragon",
+"fairy",
+"fighting",
+"fire",
+"flying",
+"ghost",
+"grass",
+"ground", 
+"ice",
+"normal",
+"steel",
+"psychic",
+"rock",
+"water",
+      ]
     }
   }
 
+  getPokemons = async () => {
+    const pokedex = new PokedexApi();
+    setTimeout(function(){
+      console.log('entrei');
+      
+    }, 10000);
+    let allPokemons = [];
+   for (let index = 1; index <= 151; index++) {
+    const element = await requestGet(`pokemon/${index}`);
+    element['image'] = pokedex.pokemon(index).sprites.animated;
+    allPokemons.push(element);
+  } 
+  this.setState({
+    allPokemons,
+  })
+  this.setState({
+    loading: false,
+  })
+  return allPokemons;    
+  }
+
+  componentDidMount() {
+    this.getPokemons();
+
+  }
+
   nextPokemon = () => {
-    const {indexPokemon, allPokemons} = this.state
+    const { indexPokemon, allPokemons } = this.state
     this.setState((posicaoAnterior, _prop)=> ({
       indexPokemon: indexPokemon < allPokemons.length-1 ? posicaoAnterior.indexPokemon +1 : 0
     })); 
   };
 
-  filterPokemon = (event) => {
-    const {pokemons} = this.props
+  prevPokemon = () => {
+    const { indexPokemon } = this.state
+    this.setState((posicaoAnterior, _prop)=> ({
+      indexPokemon: indexPokemon > 0 ? posicaoAnterior.indexPokemon -1 : 150
+    })); 
+  };
 
-    if(event.target.innerText === 'All') {
+  filterPokemon = async (event) => {
+    const pokemons = await this.getPokemons();
+    if(event.target.name === 'all') {
       this.setState({
         indexPokemon: 0,
         allPokemons: pokemons,
       })
     } else {
-    this.setState({
-      typePokemon: event.target.innerText,
-      indexPokemon: 0,
-      allPokemons: pokemons.filter((element) => element.type === event.target.innerText)
+      const filter = pokemons.filter((element) =>  {
+       if (element.types.length > 1) {
+       return element.types[0].type.name === event.target.name || element.types[1].type.name === event.target.name;
+     } else {
+       return element.types[0].type.name === event.target.name 
+     }
     })
-    
-    }
+
+    this.setState({
+      typePokemon: event.target.name,
+      indexPokemon: 0,
+      allPokemons: filter,
+      }) 
+
   }
+}
 
   render(){
-    const {allPokemons, indexPokemon} = this.state
+    const {allPokemons, indexPokemon, arrayTypes, loading} = this.state
     return (
-        <div className="background">
+          loading ? <Loading/> :
+          <div className="background">
           <div className="card">
             {
             allPokemons
@@ -48,15 +114,36 @@ class Pokedex extends React.Component {
             }
             </div>
             <div className="buttons">
-                <button type="button" onClick={this.nextPokemon}>Próximo</button>
-                <button type="button" onClick={this.filterPokemon}>All</button> 
-                <button type="button" onClick={this.filterPokemon}>Electric</button> 
-                <button type="button" onClick={this.filterPokemon}>Fire</button> 
-                <button type="button" onClick={this.filterPokemon}>Bug</button> 
-                <button type="button" onClick={this.filterPokemon}>Poison</button> 
-                <button type="button" onClick={this.filterPokemon}>Psychic</button> 
-                <button type="button" onClick={this.filterPokemon}>Normal</button>
-                <button type="button" onClick={this.filterPokemon}>Dragon</button>
+              
+                <button type="button" title="All Pokemons" className="btn-type" name= "all" onClick={this.filterPokemon}>
+                <img className="img-type"  name= "all" alt="All-Btn" src={require("./img/pokebola.png")}/>
+                  </button> 
+                <Button type="normal" filterPokemon={this.filterPokemon}/>
+
+              {
+                arrayTypes.map((e) =>  <Button key={e} type={e} filterPokemon={this.filterPokemon}/>)
+              }
+                <div className="constainer-btn-next">
+                  <button type="button" title="Previous Pokemons" className="btn-type" name= "Previous" onClick={this.prevPokemon}>
+                      <img className="img-type"  name= "Previous" alt="Previous-Btn" src={require("./img/btn-prev.png")}/>
+                  </button> 
+                      
+                      <button type="button" title="Next Pokemons" className="btn-type" name= "Next" onClick={this.nextPokemon}>
+                      <img className="img-type"  name= "Next" alt="Next-Btn" src={require("./img/btn-next.png")}/>
+                        </button> 
+                </div>
+                <div className="container-my-btn">
+                  <button type="button" title="My github" className="btn-type">
+                    <a href="https://github.com/CarlaUyemura" target="_blank" rel="noreferrer">
+                    <img alt='Github-btn' src={require("./img/github.png")} className="img-type btn-git"/>
+                    </a>
+                  </button>
+                  <button type="button" title="My linkedin" className="btn-type">
+                    <a href="https://www.linkedin.com/in/carla-uyemura/" target="_blank" rel="noreferrer">
+                    <img alt='linkedin-btn' src={require("./img/linkedin.png")} className="img-type"/>
+                    </a>
+                  </button>
+                </div>
             </div>
       </div>
     )

@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import './App.css';
 import Pokedex from './Pokedex';
 import pokemons from './data';
