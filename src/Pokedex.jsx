@@ -40,9 +40,7 @@ class Pokedex extends React.Component {
   getPokemons = async () => {
     const pokedex = new PokedexApi();
     setTimeout(function(){
-      console.log('entrei');
-      
-    }, 10000);
+    }, 2000);
     let allPokemons = [];
    for (let index = 1; index <= 151; index++) {
     const element = await requestGet(`pokemon/${index}`);
@@ -118,7 +116,6 @@ class Pokedex extends React.Component {
                 <button type="button" title="All Pokemons" className="btn-type" name= "all" onClick={this.filterPokemon}>
                 <img className="img-type"  name= "all" alt="All-Btn" src={require("./img/pokebola.png")}/>
                   </button> 
-                <Button type="normal" filterPokemon={this.filterPokemon}/>
 
               {
                 arrayTypes.map((e) =>  <Button key={e} type={e} filterPokemon={this.filterPokemon}/>)
