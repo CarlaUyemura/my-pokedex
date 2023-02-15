@@ -137,12 +137,12 @@ class Pokedex extends React.Component {
                         </button> 
                 </div>
                 <div className="container-my-btn">
-                  <button type="button" title="My github" className="btn-type">
+                  <button type="button" title="Github Carla Uyemura" className="btn-type">
                     <a href="https://github.com/CarlaUyemura" target="_blank" rel="noreferrer">
                     <img alt='Github-btn' src={require("./img/github.png")} className="img-type btn-git"/>
                     </a>
                   </button>
-                  <button type="button" title="My linkedin" className="btn-type">
+                  <button type="button" title="Linkedin Carla Uyemura" className="btn-type">
                     <a href="https://www.linkedin.com/in/carla-uyemura/" target="_blank" rel="noreferrer">
                     <img alt='linkedin-btn' src={require("./img/linkedin.png")} className="img-type"/>
                     </a>
