@@ -18,7 +18,6 @@ class Pokedex extends React.Component {
       arrayTypes: [
 "electric",
 "bug" ,
-"dark",
 "dragon",
 "fairy",
 "fighting",
@@ -39,8 +38,6 @@ class Pokedex extends React.Component {
 
   getPokemons = async () => {
     const pokedex = new PokedexApi();
-    setTimeout(function(){
-    }, 2000);
     let allPokemons = [];
    for (let index = 1; index <= 151; index++) {
     const element = await requestGet(`pokemon/${index}`);
@@ -69,9 +66,9 @@ class Pokedex extends React.Component {
   };
 
   prevPokemon = () => {
-    const { indexPokemon } = this.state
+    const { indexPokemon, allPokemons } = this.state
     this.setState((posicaoAnterior, _prop)=> ({
-      indexPokemon: indexPokemon > 0 ? posicaoAnterior.indexPokemon -1 : 150
+      indexPokemon: indexPokemon > 0 ? posicaoAnterior.indexPokemon -1 : allPokemons.length-1
     })); 
   };
 
