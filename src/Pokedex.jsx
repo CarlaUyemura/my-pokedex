@@ -5,12 +5,14 @@ import Pokemon from "./Pokemon";
 import { requestGet } from './utils/reqApi';
 import {Button} from "./Button";
 import Loading from './Loading';
+import PokeLoad from './PokeLoad';
 
- const PokedexApi = require('pokedex')
+const PokedexApi = require('pokedex')
 class Pokedex extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loadPoke: false,
       loading: true,
       indexPokemon: 0,
       typePokemon: 'All',
@@ -54,6 +56,7 @@ class Pokedex extends React.Component {
   }
 
   componentDidMount() {
+    document.title = "Pokedex";
     this.getPokemons();
 
   }
@@ -73,11 +76,16 @@ class Pokedex extends React.Component {
   };
 
   filterPokemon = async (event) => {
+    const { loadPoke } = this.state;
+    this.setState({
+     loadPoke: true,
+    });
     const pokemons = await this.getPokemons();
     if(event.target.name === 'all') {
       this.setState({
         indexPokemon: 0,
         allPokemons: pokemons,
+        loadPoke: false,
       })
     } else {
       const filter = pokemons.filter((element) =>  {
@@ -92,18 +100,20 @@ class Pokedex extends React.Component {
       typePokemon: event.target.name,
       indexPokemon: 0,
       allPokemons: filter,
+      loadPoke: false,
       }) 
 
   }
 }
 
   render(){
-    const {allPokemons, indexPokemon, arrayTypes, loading} = this.state
+    const {allPokemons, indexPokemon, arrayTypes, loading, loadPoke} = this.state
     return (
           loading ? <Loading/> :
           <div className="background">
           <div className="card">
             {
+              loadPoke ? <PokeLoad /> :
             allPokemons
             .map((element) => <Pokemon pokemon={element} key={element.id}/>)[indexPokemon]
             }

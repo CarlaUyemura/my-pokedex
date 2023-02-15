@@ -192,7 +192,6 @@ h3 {
   height: 100%;
   width: 100%;
   background-color: rgb(243, 243, 243);
-  /* background-color: rgb(236, 29, 35); */
   top: 0;
   display: flex;
   align-items: center;
@@ -206,4 +205,18 @@ h3 {
 
 .title-loading { 
 color: black;
+}
+
+.img-pokebola {
+  width: 240px;
+}
+
+.title-pokeLoad {
+  font-size: 40px;
+  font-family: 'VT323', monospace;
+  color: black;
+}
+
+.container-pokeload {
+  margin-left: 45px;
 }
