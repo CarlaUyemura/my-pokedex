@@ -9,10 +9,6 @@ O objetivo deste projeto é criar uma Pokedex, permitindo que os usuários possa
 
 Para a estilização, foi empregado CSS puro, sem a utilização de bibliotecas adicionais.
 
-
-## Ficou curioso? Então clica no link abaixo XD
-
-[Pokedex](https://pokedex-carlauyemura.vercel.app/)
 ## Referência
 
  - [PokeApi](https://pokeapi.co/)
